@@ -1,0 +1,163 @@
+@import physics
+
+pool: force 5 double in range(0, 1000)
+pool: area 5 double in range(0.1, 100)
+pool: mass 5 double in range(0, 1000)
+pool: acceleration 5 double in range(0, 100)
+pool: distance 5 double in range(0, 1000)
+pool: time 5 double in range(0.1, 100) # Avoid zero to prevent division by zero
+pool: displacement 5 double in range(0, 1000)
+pool: initial_velocity 5 double in range(0, 100)
+pool: final_velocity 5 double in range(0, 100)
+pool: velocity 5 double in range(0, 100)
+pool: height 5 double in range(0, 100)
+pool: specific_heat 5 double in range(0, 5000)
+pool: delta_temp 5 double in range(-273, 273)
+pool: theta 5 double in range(0, 360)
+pool: lever_arm 5 double in range(0, 100)
+pool: moment_of_inertia 5 double in range(0, 1000)
+pool: angular_velocity 5 double in range(0, 100)
+pool: m1 5 double in range(0, 1000)
+pool: m2 5 double in range(0, 1000)
+pool: radius 5 double in range(0.1, 100) # Avoid zero to prevent division by zero
+pool: q1 5 double in range(-100, 100)
+pool: q2 5 double in range(-100, 100)
+pool: current 5 double in range(0, 1000)
+pool: resistance 5 double in range(0.1, 1000)
+pool: molar_mass 5 double in range(0.001, 100)
+pool: temperature 5 double in range(0.01, 10000)
+pool: observer_speed 5 double in range(0, 100)
+pool: source_speed 5 double in range(0, 100)
+pool: speed_of_sound 5 double in range(300, 343) # Avoid zero to prevent division by zero
+pool: voltage 5 double in range(0, 1000)
+pool: charge 5 double in range(-100, 100)
+pool: magnetic_field 5 double in range(0, 100)
+pool: frequency 5 double in range(0, 1000)
+pool: work_function 5 double in range(0, 100)
+
+pool: result 1 double
+
+@guard(time != 0 and radius != 0 and speed_of_sound != 0 and frequency != 0)
+pressure_action:
+    result := physics.pressure(force, area)
+    assert result >= 0 "Pressure result should be non-negative."
+
+force_action:
+    result := physics.force(mass, acceleration)
+    assert result >= 0 "Force result should be non-negative."
+
+speed_action:
+    result := physics.speed(distance, time)
+    assert result >= 0 "Speed result should be non-negative."
+
+velocity_action:
+    result := physics.velocity(displacement, time)
+    assert result >= 0 "Velocity result should be non-negative."
+
+acceleration_action:
+    result := physics.acceleration(initial_velocity, final_velocity, time)
+    assert result >= 0 "Acceleration result should be non-negative."
+
+momentum_action:
+    result := physics.momentum(mass, velocity)
+    assert result >= 0 "Momentum result should be non-negative."
+
+work_action:
+    result := physics.work(force, distance)
+    assert result >= 0 "Work result should be non-negative."
+
+kinetic_energy_action:
+    result := physics.kinetic_energy(mass, velocity)
+    assert result >= 0 "Kinetic Energy result should be non-negative."
+
+potential_energy_action:
+    result := physics.potential_energy(mass, height, 9.81)
+    assert result >= 0 "Potential Energy result should be non-negative."
+
+power_action:
+    result := physics.power(work, time)
+    assert result >= 0 "Power result should be non-negative."
+
+density_action:
+    result := physics.density(mass, volume)
+    assert result > 0 "Density result should be positive."
+
+impulse_action:
+    result := physics.impulse(force, time)
+    assert result >= 0 "Impulse result should be non-negative."
+
+frequency_action:
+    result := physics.frequency(period)
+    assert result > 0 "Frequency result should be positive."
+
+period_action:
+    result := physics.period(frequency)
+    assert result > 0 "Period result should be positive."
+
+gravitational_force_action:
+    result := physics.gravitational_force(m1, m2, distance, 6.67430e-11)
+    assert result >= 0 "Gravitational Force result should be non-negative."
+
+heat_energy_action:
+    result := physics.heat_energy(mass, specific_heat, delta_temp)
+    assert result >= 0 "Heat Energy result should be non-negative."
+
+angular_velocity_action:
+    result := physics.angular_velocity(theta, time)
+    assert result >= 0 "Angular Velocity result should be non-negative."
+
+torque_action:
+    result := physics.torque(force, lever_arm)
+    assert result >= 0 "Torque result should be non-negative."
+
+angular_momentum_action:
+    result := physics.angular_momentum(moment_of_inertia, angular_velocity)
+    assert result >= 0 "Angular Momentum result should be non-negative."
+
+gravitational_potential_energy_action:
+    result := physics.gravitational_potential_energy(m1, m2, distance, 6.67430e-11)
+    assert result <= 0 "Gravitational Potential Energy result should be non-positive."
+
+centripetal_force_action:
+    result := physics.centripetal_force(mass, velocity, radius)
+    assert result >= 0 "Centripetal Force result should be non-negative."
+
+centripetal_acceleration_action:
+    result := physics.centripetal_acceleration(velocity, radius)
+    assert result >= 0 "Centripetal Acceleration result should be non-negative."
+
+coulombs_law_action:
+    result := physics.coulombs_law(8.9875517873681764e9, q1, q2, distance)
+    assert result >= 0 "Coulombs Law result should be non-negative."
+
+ohms_law_action:
+    result := physics.ohms_law(current, resistance)
+    assert result >= 0 "Ohms Law result should be non-negative."
+
+rms_speed_action:
+    result := physics.rms_speed(temperature, molar_mass)
+    assert result >= 0 "RMS Speed result should be non-negative."
+
+escape_velocity_action:
+    result := physics.escape_velocity(9.81, radius)
+    assert result >= 0 "Escape Velocity result should be non-negative."
+
+doppler_effect_action:
+    result := physics.doppler_effect(initial_frequency, observer_speed, source_speed, speed_of_sound)
+    assert result >= 0 "Doppler Effect result should be non-negative."
+
+index_of_refraction_action:
+    result := physics.index_of_refraction(angle_of_incidence, angle_of_refraction)
+    assert result >= 0 "Index of Refraction result should be non-negative."
+
+electric_power_action:
+    result := physics.electric_power(current, voltage)
+    assert result >= 0 "Electric Power result should be non-negative."
+
+magnetic_force_action:
+    result := physics.magnetic_force(charge, velocity, magnetic_field)
+    assert result >= 0 "Magnetic Force result should be non-negative."
+
+photoelectric_effect_action:
+    result := physics.photoelectric_effect(6.62607015e-34, frequency, work_function)
+    assert result >= 0 "Photoelectric Effect result should be non-negative."
